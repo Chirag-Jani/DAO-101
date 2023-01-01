@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
-
 import "../interfaces/IDAO_Whitelist.sol";
 
-contract PostContract {
+contract DAO_Post {
     struct Post {
         address payable creator;
         bytes32 catagoryId;
@@ -24,7 +23,9 @@ contract PostContract {
     // modifier to check if user is whitelisted or not
     modifier isWhitelisted() {
         require(
-            IDAO(whitelistContractAddress).isWhitelisted(msg.sender) == true,
+            IDAO_Whitelist(whitelistContractAddress).isWhitelisted(
+                msg.sender
+            ) == true,
             "You are not whitelisted"
         );
         _;

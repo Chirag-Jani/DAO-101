@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-interface IDAO {
+interface IDAO_Whitelist {
     receive() external payable;
 
     function checkAvailableFund() external;
