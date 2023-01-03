@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract DAO_Whitelist {
+contract DAO_Whitelist is ERC20 {
     // to receive the funds
     receive() external payable {}
 
@@ -10,6 +11,15 @@ contract DAO_Whitelist {
         require(msg.sender == owner, "Only owner can call");
         _;
     }
+
+    // initial supply of the token
+    uint256 initialTokens;
+
+    // claimed supply
+    uint256 claimedTokens;
+
+    // tokens to give while whitelisting
+    uint8 giftTokens;
 
     // the deployer is the owner
     address public owner;
@@ -30,9 +40,23 @@ contract DAO_Whitelist {
     mapping(address => bool) alreadyWhitelisted;
 
     // send maximum limit while deploying
-    constructor(uint8 _maxWhitelist) {
+    constructor(uint8 _maxWhitelist, uint256 _initialTokens)
+        ERC20("New Gen Social Media", "NGSM")
+    {
+        initialTokens = _initialTokens;
         owner = msg.sender;
         maxWhitelist = _maxWhitelist;
+        _mint(owner, initialTokens);
+    }
+
+    // create new tokens - previous ones exausted
+    function createTokens(uint256 amount) public onlyOwner {
+        require(
+            claimedTokens == initialTokens &&
+                initialTokens - claimedTokens < giftTokens,
+            "You have tokens Left"
+        );
+        _mint(owner, amount);
     }
 
     // withdraw the funds - only owner can
@@ -45,7 +69,6 @@ contract DAO_Whitelist {
     // add more spots to get whitelisted
     function addSpots(uint8 newSpots) public onlyOwner {
         require(currentWhitelisted == maxWhitelist, "Limit must be reached");
-
         maxWhitelist += newSpots;
     }
 
