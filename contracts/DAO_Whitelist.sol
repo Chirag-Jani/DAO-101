@@ -87,6 +87,8 @@ contract DAO_Whitelist {
 
         // decrease space by increasing current whitelisted users
         currentWhitelisted += 1;
+
+        // TODO: Mint an NFT to the sender
     }
 
     // to check if any user is whitelisted
