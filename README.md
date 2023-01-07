@@ -1,11 +1,5 @@
 # TODO
 
-- on getting whitelisted, user receives X amount of ERC20 token.
-- spend on creating new posts
-- earn more tokens by engaging with other's posts (like, comment, vote, on following certain number of people
-
-  - like get 10 token once you follow 100 people)
-
 - event for each functions with indexed (both the contracts)
 
 # FLOW

@@ -12,26 +12,17 @@ contract DAO_Whitelist is ERC20 {
         _;
     }
 
-    // initial supply of the token
-    uint256 initialTokens;
-
-    // claimed supply
-    uint256 claimedTokens;
-
-    // tokens to give while whitelisting
-    uint8 giftTokens;
-
     // the deployer is the owner
     address public owner;
 
     // maximum spots available
-    uint8 public maxWhitelist;
+    uint256 public maxWhitelist;
 
     // currently added users
-    uint8 public currentWhitelisted;
+    uint256 public currentWhitelisted;
 
     // fees to get involved
-    uint8 public whitelistFees;
+    uint256 public whitelistFees;
 
     // make the process paid
     bool public isPaid;
@@ -40,23 +31,11 @@ contract DAO_Whitelist is ERC20 {
     mapping(address => bool) alreadyWhitelisted;
 
     // send maximum limit while deploying
-    constructor(uint8 _maxWhitelist, uint256 _initialTokens)
+    constructor(uint256 _maxWhitelist)
         ERC20("New Gen Social Media", "NGSM")
     {
-        initialTokens = _initialTokens;
         owner = msg.sender;
         maxWhitelist = _maxWhitelist;
-        _mint(owner, initialTokens);
-    }
-
-    // create new tokens - previous ones exausted
-    function createTokens(uint256 amount) public onlyOwner {
-        require(
-            claimedTokens == initialTokens &&
-                initialTokens - claimedTokens < giftTokens,
-            "You have tokens Left"
-        );
-        _mint(owner, amount);
     }
 
     // withdraw the funds - only owner can
@@ -67,13 +46,13 @@ contract DAO_Whitelist is ERC20 {
     }
 
     // add more spots to get whitelisted
-    function addSpots(uint8 newSpots) public onlyOwner {
+    function addSpots(uint256 newSpots) public onlyOwner {
         require(currentWhitelisted == maxWhitelist, "Limit must be reached");
         maxWhitelist += newSpots;
     }
 
     // make the whitelisting paid
-    function makeItPaid(uint8 amount) public onlyOwner {
+    function makeItPaid(uint256 amount) public onlyOwner {
         isPaid = true;
         whitelistFees = amount;
     }
@@ -110,8 +89,6 @@ contract DAO_Whitelist is ERC20 {
 
         // decrease space by increasing current whitelisted users
         currentWhitelisted += 1;
-
-        // TODO: Mint an NFT to the sender
     }
 
     // to check if any user is whitelisted

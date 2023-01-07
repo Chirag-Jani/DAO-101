@@ -87,7 +87,6 @@ contract DAO_Post {
     {
         address _creator = msg.sender;
         bytes32 _contentId = keccak256(abi.encode(contentString));
-
         bytes32 _postId = keccak256(abi.encodePacked(_contentId, _creator));
 
         // check cooldown time
